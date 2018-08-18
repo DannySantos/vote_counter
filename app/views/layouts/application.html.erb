@@ -10,6 +10,12 @@
   </head>
 
   <body>
-    <%= yield %>
+     <div class="container">
+        <%= link_to root_path do %>
+          <h1>Votes Counter</h1>
+        <% end %>
+        
+        <%= yield %>
+     </div>
   </body>
 </html>

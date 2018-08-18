@@ -1,8 +1,7 @@
-<h1><%= @campaign.name %></h1>
+<h2>Votes for campaign: <%= @campaign.name %></h2>
 
-<div>
+<div class="candidates">
   <%= render @candidates unless @candidates.nil? %>
 </div>
-
 
 <p>Uncounted votes: <%= @uncounted_votes.count %></p>

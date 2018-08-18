@@ -1,0 +1,27 @@
+.candidates {
+  display: grid;
+  grid-template-columns: 1fr 50px;
+  text-align: left;
+  margin: 0 10px;
+  border-bottom: 1px solid #999;
+  width: 76%;
+  margin-left: 12%;
+  
+  p {
+    height: 50px;
+    line-height: 50px;
+    background-color: #f7f7f7;
+    margin: 0;
+    border: 1px solid #999;
+    border-bottom: none;
+  }
+  
+  p:nth-child(odd) {
+    border-right: none;
+    text-indent: 10px;
+  }
+  
+  p:nth-child(even) {
+    text-align: center;
+  }
+}
