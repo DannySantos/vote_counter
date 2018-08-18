@@ -1,7 +1,7 @@
 <h1><%= @campaign.name %></h1>
 
 <div>
-  <%= render @campaign.candidates if @campaign.candidates.any? %>
+  <%= render @candidates unless @candidates.nil? %>
 </div>
 
 

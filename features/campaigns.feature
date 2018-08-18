@@ -7,7 +7,6 @@ Scenario: A visitor views a list of campaigns
   When they visit the campaigns page
   Then they should see the campaigns
   
-@wip
 Scenario: A visitor views a campaign
   Given there are some campaigns
     And there are some candidates
