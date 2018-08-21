@@ -32,13 +32,15 @@ task :parse_votes, [:filepath] => :environment do |t, args|
   campaign_names_existing = Campaign.pluck(:name)
   
   campaign_names.uniq.each do |campaign_name|
-    campaign_sql_values << "('#{campaign_name}', '#{DateTime.now.strftime("%Y-%m-%d %H:%M:%S.%6N")}', '#{DateTime.now.strftime("%Y-%m-%d %H:%M:%S.%6N")}')" unless campaign_names_existing.include? campaign_name
+    next if campaign_names_existing.include? campaign_name
+    campaign_sql_values << "('#{campaign_name}', '#{DateTime.now.strftime("%Y-%m-%d %H:%M:%S.%6N")}', '#{DateTime.now.strftime("%Y-%m-%d %H:%M:%S.%6N")}')"
   end
   
   candidate_names_existing = Candidate.pluck(:name)
   
   candidate_names.uniq.each do |candidate_name|
-    candidate_sql_values << "('#{candidate_name}', '#{DateTime.now.strftime("%Y-%m-%d %H:%M:%S.%6N")}', '#{DateTime.now.strftime("%Y-%m-%d %H:%M:%S.%6N")}')" unless candidate_names_existing.include? candidate_name
+    next if unless candidate_names_existing.include? candidate_name
+    candidate_sql_values << "('#{candidate_name}', '#{DateTime.now.strftime("%Y-%m-%d %H:%M:%S.%6N")}', '#{DateTime.now.strftime("%Y-%m-%d %H:%M:%S.%6N")}')" 
   end
   
   campaigns_sql = "INSERT INTO campaigns (name, created_at, updated_at) VALUES #{campaign_sql_values.uniq.join(",")}"
@@ -46,9 +48,18 @@ task :parse_votes, [:filepath] => :environment do |t, args|
   
   campaigns_sql_sanitised = ActiveRecord::Base::sanitize_sql(campaigns_sql)
   candidates_sql_sanitised = ActiveRecord::Base::sanitize_sql(candidates_sql)
+    
+  unless campaign_sql_values.empty?
+    ActiveRecord::Base.connection.execute(campaigns_sql_sanitised)
+  else
+    puts "No new records"
+  end
   
-  ActiveRecord::Base.connection.execute(campaigns_sql_sanitised)
-  ActiveRecord::Base.connection.execute(candidates_sql_sanitised)
+  unless candidate_sql_values.empty?
+    ActiveRecord::Base.connection.execute(candidates_sql_sanitised)
+  else
+    puts "No new records"
+  end
 
   campaigns = Campaign.all
   candidates = Candidate.all
