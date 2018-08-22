@@ -1,7 +1,7 @@
 <h2>Votes for campaign: <%= @campaign.name %></h2>
 
 <div class="candidates">
-  <% @votes.each do |name, votes| %>
+  <% @candidates_and_scores.each do |name, votes| %>
     <p><%= name %></p>
     <p><%= votes %></p>
   <% end %>
